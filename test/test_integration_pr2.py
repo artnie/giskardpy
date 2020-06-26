@@ -304,6 +304,15 @@ class TestJointGoals(object):
         zero_pose.send_and_check_goal(execute=False)
         zero_pose.check_joint_state(default_pose)
 
+
+    def test_prismatic_joint1(self, zero_pose):
+        """
+        :type zero_pose: PR2
+        """
+        zero_pose.allow_self_collision()
+        js = {u'torso_lift_joint': 0.1}
+        zero_pose.send_and_check_joint_goal(js)
+
     # TODO test goal for unknown joint
 
 
@@ -1017,6 +1026,12 @@ class TestCollisionAvoidanceGoals(object):
         pocky = u'http://muh#pocky'
         zero_pose.attach_box(pocky, [0.1, 0.02, 0.02], u'', [0.05, 0, 0],
                              expected_response=UpdateWorldResponse.MISSING_BODY_ERROR)
+
+    def test_detach_unknown_object(self, zero_pose):
+        """
+        :type zero_pose: PR2
+        """
+        zero_pose.detach_object(u'nil', expected_response=UpdateWorldResponse.MISSING_BODY_ERROR)
 
     def test_add_remove_object(self, zero_pose):
         """
